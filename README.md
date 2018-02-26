@@ -16,7 +16,9 @@ Using this `repo` function is much quicker, and even covers additional use cases
 
 Copy the contents of the `repo.sh` file and paste them into your `~/.zshrc` file. The function needs to be placed in your shell resource file because it needs to be declared when your interactive shell session initializes.
 
-**Bash Users**: If you are using Bash, the contents should be pasted in `~/.bashrc`. Note that the autocompletion definitions won't work in Bash, and so are skipped altogether.
+### Bash Users
+
+If you are using Bash, the contents should be pasted in `~/.bashrc`. Note that the autocompletion definitions won't work in Bash, and so are skipped altogether.
 
 ## Usage
 
@@ -36,3 +38,5 @@ repo remove <name>
 # Show help text for all commands
 repo help
 ```
+
+If you store your repositories in a directory other than `~/Sites`, you can change the value of the `$REPOSITORIES` variable to the path to that directory.
