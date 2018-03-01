@@ -1,6 +1,6 @@
-export REPOSITORIES=~/Sites
+export REPOSITORIES=~/Projects
 
-function repo() {
+function proj() {
   local GREEN='\033[0;32m'
   local RED='\033[0;31m'
   local NC='\033[0m'
@@ -14,15 +14,15 @@ function repo() {
   case "$1" in
     help)
       echo "
-  Usage: repo [<command>] [<name>]
+  Usage: proj [<command>] [<name>]
 
-  repo                   Change directory into ${GREEN}\$REPOSITORIES${NC}
-  repo <name>            Change directory into a repository
-  repo list              List all repositories
-  repo add <name>        Create a new directory in ${GREEN}\$REPOSITORIES${NC} and change into it
-  repo add <git_url>     Clone a Git repository into ${GREEN}\$REPOSITORIES${NC} and change into it
-  repo remove <name>     Move a repository into Trash
-  repo help              Show help text for all commands
+  proj                   Change directory into ${GREEN}\$REPOSITORIES${NC}
+  proj <name>            Change directory into a repository
+  proj list              List all repositories
+  proj add <name>        Create a new directory in ${GREEN}\$REPOSITORIES${NC} and change into it
+  proj add <git_url>     Clone a Git repository into ${GREEN}\$REPOSITORIES${NC} and change into it
+  proj remove <name>     Move a repository into Trash
+  proj help              Show help text for all commands
 
   Where <name> is a directory inside ${GREEN}\$REPOSITORIES${NC} (or one to be added)
       ";
@@ -39,6 +39,9 @@ function repo() {
       	name="${base%.*}"	
       	git clone $2 $REPOSITORIES/$name	
       	cd "$REPOSITORIES/$name"
+        if [ -f .nvmrc ]; then
+          nvm use
+        fi
       else
         mkdir "$REPOSITORIES/$2"
         cd "$REPOSITORIES/$2"
@@ -72,6 +75,9 @@ function repo() {
     *)
       if [ -d "$REPOSITORIES/$1" ]; then
         cd "$REPOSITORIES/$1"
+        if [ -f .nvmrc ]; then
+          nvm use
+        fi
         return 0
       else
         cd "$REPOSITORIES"
@@ -81,12 +87,8 @@ function repo() {
   esac
 }
 
-# Autocompletions for ZSH
-if [ -n $(type compdef &>/dev/null) ]; then
-  function _repo_completion() {
-    compls=$(repo list)
-    completions=(${=compls})
-    compadd -- $completions
-  }
-  compdef _repo_completion repo
-fi
+proj_complete () {
+  local cur=${COMP_WORDS[COMP_CWORD]}
+  COMPREPLY=( $(compgen -W "$(ls $REPOSITORIES)" -- $cur) )
+}
+complete -F proj_complete proj
