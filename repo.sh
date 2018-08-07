@@ -16,13 +16,13 @@ function proj() {
       echo "
   Usage: proj [<command>] [<name>]
 
-  proj                   Change directory into ${GREEN}\$REPOSITORIES${NC}
-  proj <name>            Change directory into a repository
-  proj list              List all repositories
-  proj add <name>        Create a new directory in ${GREEN}\$REPOSITORIES${NC} and change into it
-  proj add <git_url>     Clone a Git repository into ${GREEN}\$REPOSITORIES${NC} and change into it
-  proj remove <name>     Move a repository into Trash
-  proj help              Show help text for all commands
+  proj                              Change directory into ${GREEN}\$REPOSITORIES${NC}
+  proj <name>                       Change directory into a repository
+  proj list                         List all repositories
+  proj add <name>                   Create a new directory in ${GREEN}\$REPOSITORIES${NC} and change into it
+  proj add <git_url> <opt_dir_name> Clone a Git repository into ${GREEN}\$REPOSITORIES${NC} and change into it
+  proj remove <name>                Move a repository into Trash
+  proj help                         Show help text for all commands
 
   Where <name> is a directory inside ${GREEN}\$REPOSITORIES${NC} (or one to be added)
       ";
@@ -34,11 +34,10 @@ function proj() {
       elif [ -d "$REPOSITORIES/$2" ]; then
         echo "${RED}A directory '$2' already exists${NC}"
         return 1
-      elif [[ "$2" =~ \.git$ ]]; then	
-      	base=$(basename $2)	
-      	name="${base%.*}"	
-      	git clone $2 $REPOSITORIES/$name	
-      	cd "$REPOSITORIES/$name"
+      elif [[ "$2" =~ \.git$ ]]; then
+        if [ -z "$3" ]; then base=$(basename $2) name="${base%.*}"; else name="$3"; fi
+        git clone $2 $REPOSITORIES/$name	
+        cd "$REPOSITORIES/$name"
         if [ -f .nvmrc ]; then
           nvm use
         fi
