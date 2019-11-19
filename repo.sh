@@ -86,8 +86,17 @@ function proj() {
   esac
 }
 
-proj_complete () {
-  local cur=${COMP_WORDS[COMP_CWORD]}
-  COMPREPLY=( $(compgen -W "$(ls $REPOSITORIES)" -- $cur) )
-}
-complete -F proj_complete proj
+if [ -n "$ZSH_VERSION" ]; then
+  function proj_complete() {
+    compls=$(proj list)
+    completions=(${=compls})
+    compadd -- $completions
+  }
+  compdef proj_complete proj
+elif [ -n "$BASH_VERSION" ]; then
+  function proj_complete () {
+    local cur=${COMP_WORDS[COMP_CWORD]}
+    COMPREPLY=( $(compgen -W "$(ls $REPOSITORIES)" -- $cur) )
+  }
+  complete -F proj_complete proj
+fi

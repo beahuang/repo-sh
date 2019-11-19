@@ -10,33 +10,29 @@ The usual methods to change directory between projects are awkward and cumbersom
 2. Memorize the full path and write out the full command every time
 3. Search through previous commands using the `↑` key
 
-Using this `repo` function is much quicker, and even covers additional use cases beyond just changing directory — like adding a new repository to your Sites directory!
+Using this `proj` function is much quicker, and even covers additional use cases beyond just changing directory — like adding a new repository to your Sites directory!
 
 ## Installation
 
 Copy the contents of the `repo.sh` file and paste them into your `~/.zshrc` file. The function needs to be placed in your shell resource file because it needs to be declared when your interactive shell session initializes.
 
-### Bash Users
-
-If you are using Bash, the contents should be pasted in `~/.bashrc`. Note that the autocompletion definitions won't work in Bash, and so are skipped altogether.
-
 ## Usage
 
 ```sh
 # Change directory into $REPOSITORIES
-repo
+proj
 # Change directory into a repository
-repo <name>
+proj <name>
 # List all repositories
-repo list
+proj list
 # Create a new directory in $REPOSITORIES and change into it
-repo add <name>
+proj add <name>
 # Clone a Git repository into $REPOSITORIES and change into it
-repo add <git_url>
+proj add <git_url> <opt_dir_name>
 # Move a repository into Trash
-repo remove <name>
+proj remove <name>
 # Show help text for all commands
-repo help
+proj help
 ```
 
 If you store your repositories in a directory other than `~/Sites`, you can change the value of the `$REPOSITORIES` variable to the path to that directory.
